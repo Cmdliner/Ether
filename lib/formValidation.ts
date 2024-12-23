@@ -7,18 +7,28 @@ export const personalInfoSchema = z.object({
     .number({ invalid_type_error: "Age must be a number" })
     .positive("Age must be positive")
     .int("Age must be a whole number"),
+  nationality: z.string().min(1, "Nationality required"),
+  gender: z.enum(["F", "M"], {
+    required_error: "Gender required", 
+    invalid_type_error: `Gender has to be either "F" or "M"`
+  })
+
 });
 
-export const medicalHistorySchema = z.object({
-  allergies: z.string().min(1, "Allergies are required"),
-  medications: z.string().min(1, "Medications are required"),
-});
+  export const medicalHistorySchema = z.object({
+    allergies: z.string().optional(),
+    medications: z.string().optional(),
+    genotype: z.enum(["AS", "AA", "AC", "SS", "SC", "CC"], {
+      required_error: "Genotype is required",
+      invalid_type_error: "Invalid genotype"
+    })
+  });
 
-// Combine all schemas
-export const validationSchemas = [personalInfoSchema, medicalHistorySchema];
+  // Combine all schemas
+  export const validationSchemas = [personalInfoSchema, medicalHistorySchema];
 
 
-type PersonalInfo = z.infer<typeof personalInfoSchema>;
-type MedicalHistory = z.infer<typeof medicalHistorySchema>;
+  type PersonalInfo = z.infer<typeof personalInfoSchema>;
+  type MedicalHistory = z.infer<typeof medicalHistorySchema>;
 
-export type FormData = PersonalInfo & MedicalHistory;
+  export type FormData = PersonalInfo & MedicalHistory;

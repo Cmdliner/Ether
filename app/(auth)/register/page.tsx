@@ -8,6 +8,7 @@ import { validationSchemas, FormData } from "@/lib/formValidation";
 const steps = [
   { id: 1, label: "Personal Information" },
   { id: 2, label: "Medical History" },
+  { id: 3, label: "Account Credentials" },
 ];
 
 export default function Page() {
@@ -19,9 +20,12 @@ export default function Page() {
     defaultValues: {
       first_name: "",
       last_name: "",
+      gender: undefined,
+      nationality: "",
       age: undefined,
       allergies: "",
       medications: "",
+      genotype: undefined,
     },
     mode: "onBlur",
   });
@@ -43,8 +47,11 @@ export default function Page() {
   const goBack = () => setCurrentStep((prev) => prev - 1);
 
   return (
-    <div className="min-h-screen flex items-center justify-center m-[2em]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ">
-      <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
+    <div className="min-h-screen flex  items-center justify-center m-[2em]">
+      <div className="w-full max-w-lg py-[5em] md:py-0 p-6 bg-white rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold text-center mb-[1rem]">
+          Eather | Register
+        </h1>
         {/* Progress Bar */}
         <div className="relative w-full h-2 bg-gray-200 rounded-full mb-6">
           <div
@@ -107,6 +114,34 @@ export default function Page() {
                     </p>
                   )}
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Gender
+                  </label>
+                  <input
+                    {...register("gender")}
+                    className="w-full mt-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  {errors.gender && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.gender.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Nationality
+                  </label>
+                  <input
+                    {...register("nationality")}
+                    className="w-full mt-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  {errors.nationality && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.nationality.message}
+                    </p>
+                  )}
+                </div>
               </>
             )}
 
@@ -137,6 +172,20 @@ export default function Page() {
                   {errors.medications && (
                     <p className="text-red-500 text-sm mt-1">
                       {errors.medications.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Genotype
+                  </label>
+                  <input
+                    {...register("genotype")}
+                    className="w-full mt-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  {errors.genotype && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.genotype.message}
                     </p>
                   )}
                 </div>
