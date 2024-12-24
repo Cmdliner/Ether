@@ -192,6 +192,57 @@ export default function Page() {
               </>
             )}
 
+{currentStep === 2 && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <input
+                    {...register("email")}
+                    className="w-full mt-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                  type="email"
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Password
+                  </label>
+                  <input
+                    {...register("password")}
+                    className="w-full mt-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                    type="password"
+                  />
+                  {errors.password && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.password.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Confirm Password
+                  </label>
+                  <input
+                    {...register("confirm_password")}
+                    className="w-full mt-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                    type="password"
+                  />
+                  {errors.confirm_password && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.confirm_password.message}
+                    </p>
+                  )}
+                </div>
+              </>
+            )}
+
+
             {/* Navigation Buttons */}
             <div className="flex justify-between mt-6">
               {currentStep > 0 && (

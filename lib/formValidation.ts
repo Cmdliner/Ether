@@ -15,14 +15,20 @@ export const personalInfoSchema = z.object({
 
 });
 
-  export const medicalHistorySchema = z.object({
+export const medicalHistorySchema = z.object({
     allergies: z.string().optional(),
     medications: z.string().optional(),
     genotype: z.enum(["AS", "AA", "AC", "SS", "SC", "CC"], {
       required_error: "Genotype is required",
       invalid_type_error: "Invalid genotype"
     })
-  });
+});
+
+export const accountCredentialsSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+  confirm_password: z.string()
+})
 
   // Combine all schemas
   export const validationSchemas = [personalInfoSchema, medicalHistorySchema];
@@ -30,5 +36,6 @@ export const personalInfoSchema = z.object({
 
   type PersonalInfo = z.infer<typeof personalInfoSchema>;
   type MedicalHistory = z.infer<typeof medicalHistorySchema>;
+  type AccountCredentials = z.infer<typeof accountCredentialsSchema>;
 
-  export type FormData = PersonalInfo & MedicalHistory;
+  export type FormData = PersonalInfo & MedicalHistory & AccountCredentials;
