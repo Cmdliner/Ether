@@ -5,6 +5,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { validationSchemas, FormData } from "@/lib/formValidation";
 import { countries } from "@/lib/countries";
+import { redirect } from "next/navigation";
 
 const steps = [
   { id: 1, label: "Personal Information" },
@@ -41,11 +42,27 @@ export default function Page() {
     formState: { errors },
   } = methods;
 
-  const onSubmit = (data: Partial<FormData>) => {
+  const onSubmit = async (data: Partial<FormData>) => {
     const updatedData = { ...formData, ...data };
     setFormData(updatedData);
     if (isLastStep) {
-      console.log("Final Submission Data:", updatedData);
+      if(updatedData.password !== updatedData.confirm_password) {
+        // throw new form error that says that confirm pasword doesnt match password
+      }
+
+      // !todo => Send request (excluding confirm_password) to /api/register;
+      const { confirm_password, ...userData } = updatedData;
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(userData)
+      });
+      const data = await res.json();
+      if(data.status === 201) {
+        redirect("/");
+      }
+      // ! todo => Handle other kinds of errors and error states
       return;
     }
     setCurrentStep((prev) => prev + 1);
