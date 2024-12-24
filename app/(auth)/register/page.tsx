@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { validationSchemas, FormData } from "@/lib/formValidation";
+import { countries } from "@/lib/countries";
 
 const steps = [
   { id: 1, label: "Personal Information" },
@@ -14,34 +15,41 @@ const steps = [
 export default function Page() {
   const [currentStep, setCurrentStep] = useState(0);
   const isLastStep = currentStep === steps.length - 1;
+  const [formData, setFormData] = useState<Partial<FormData>>({
+    full_name: "",
+    gender: undefined,
+    nationality: "",
+    age: 0,
+    allergies: undefined,
+    medications: undefined,
+    genotype: undefined,
+    email: "",
+    password: "",
+    confirm_password: "",
+  });
 
   const methods = useForm<FormData>({
     resolver: zodResolver(validationSchemas[currentStep]),
-    defaultValues: {
-      first_name: "",
-      last_name: "",
-      gender: undefined,
-      nationality: "",
-      age: undefined,
-      allergies: "",
-      medications: "",
-      genotype: undefined,
-    },
+    defaultValues: formData,
     mode: "onBlur",
   });
 
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = methods;
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: Partial<FormData>) => {
+    const updatedData = { ...formData, ...data };
+    setFormData(updatedData);
     if (isLastStep) {
-      console.log("Final Submission Data:", data);
+      console.log("Final Submission Data:", updatedData);
       return;
     }
     setCurrentStep((prev) => prev + 1);
+    reset(updatedData);
   };
 
   const goBack = () => setCurrentStep((prev) => prev - 1);
@@ -49,9 +57,6 @@ export default function Page() {
   return (
     <div className="min-h-screen flex  items-center justify-center m-[2em]">
       <div className="w-full max-w-lg py-[5em] md:py-0 p-6 bg-white rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-[1rem]">
-          Eather | Register
-        </h1>
         {/* Progress Bar */}
         <div className="relative w-full h-2 bg-gray-200 rounded-full mb-6">
           <div
@@ -73,29 +78,15 @@ export default function Page() {
               <>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    First Name
+                    Full Name
                   </label>
                   <input
-                    {...register("first_name")}
+                    {...register("full_name")}
                     className="w-full mt-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
                   />
-                  {errors.first_name && (
+                  {errors.full_name && (
                     <p className="text-red-500 text-sm mt-1">
-                      {errors.first_name.message}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Last Name
-                  </label>
-                  <input
-                    {...register("last_name")}
-                    className="w-full mt-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                  {errors.last_name && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.last_name.message}
+                      {errors.full_name.message}
                     </p>
                   )}
                 </div>
@@ -118,10 +109,13 @@ export default function Page() {
                   <label className="block text-sm font-medium text-gray-700">
                     Gender
                   </label>
-                  <input
+                  <select
                     {...register("gender")}
                     className="w-full mt-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
+                  >
+                    <option value="M">M</option>
+                    <option value="F">F</option>
+                  </select>
                   {errors.gender && (
                     <p className="text-red-500 text-sm mt-1">
                       {errors.gender.message}
@@ -132,10 +126,15 @@ export default function Page() {
                   <label className="block text-sm font-medium text-gray-700">
                     Nationality
                   </label>
-                  <input
+                  <select
                     {...register("nationality")}
                     className="w-full mt-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
+                  >
+                    <option value="">-- Select Country --</option>
+                    {countries.map((country: string) => (
+                      <option key={country} value={country}>{country}</option>
+                    ))}
+                  </select>
                   {errors.nationality && (
                     <p className="text-red-500 text-sm mt-1">
                       {errors.nationality.message}
@@ -192,7 +191,7 @@ export default function Page() {
               </>
             )}
 
-{currentStep === 2 && (
+            {currentStep === 2 && (
               <>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -201,7 +200,7 @@ export default function Page() {
                   <input
                     {...register("email")}
                     className="w-full mt-1 border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
-                  type="email"
+                    type="email"
                   />
                   {errors.email && (
                     <p className="text-red-500 text-sm mt-1">
@@ -241,7 +240,6 @@ export default function Page() {
                 </div>
               </>
             )}
-
 
             {/* Navigation Buttons */}
             <div className="flex justify-between mt-6">
