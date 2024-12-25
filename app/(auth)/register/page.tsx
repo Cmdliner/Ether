@@ -43,14 +43,14 @@ export default function Page() {
   } = methods;
 
   const onSubmit = async (data: Partial<FormData>) => {
-    const updatedData = { ...formData, ...data };
+    const updatedData: Partial<FormData> = { ...formData, ...data };
     setFormData(updatedData);
     if (isLastStep) {
       if(updatedData.password !== updatedData.confirm_password) {
         // throw new form error that says that confirm pasword doesnt match password
       }
 
-      // !todo => Send request (excluding confirm_password) to /api/register;
+      // !todo => Send request (excluding confirm_password) to /api/auth/register;
       const { confirm_password, ...userData } = updatedData;
       const res = await fetch("/api/auth/register", {
         method: "POST",

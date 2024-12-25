@@ -1,5 +1,6 @@
 import { DB } from "@/lib/config/db.config";
 import { User } from "@/models/user.model";
+import { hash } from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -8,7 +9,7 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         // !todo => Sanitize data
         // !todo => hash user's password with bcrypt
-        const hashedPassword = await (body.password);
+        const hashedPassword = await hash(body.password, 10);
         const user = new User({ ...body, email: body.email.toLowerCase(), password: hashedPassword });
         await user.save();
 
