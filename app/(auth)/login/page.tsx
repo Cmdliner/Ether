@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,26 +12,60 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { LoginData, loginValidationSchema } from "@/lib/formValidation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 export default function Page({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const router = useRouter();
+  const { register, handleSubmit } = useForm<LoginData>({
+    resolver: zodResolver(loginValidationSchema),
+    defaultValues: { email: "", password: "" },
+    mode: "onBlur",
+  });
+
+  const onSubmit: SubmitHandler<LoginData> = async (data: LoginData) => {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+        Accepts: "application/json",
+      },
+      body: JSON.stringify(data),
+    } satisfies RequestInit);
+
+    if (!res.ok) {
+      // !todo => Handle errors
+    }
+    const { access_token, status } = await res.json();
+    if (status > 400) {
+      // !todo => Handle errors
+    }
+
+    localStorage.setItem("auth_token", access_token);
+    router.push("/");
+  };
+
   return (
-    <section className="flex items-center justify-center min-h-screen">
+    <section className="bg-black md:bg-inherit flex items-center justify-center min-h-screen">
       <div
         className={`max-w-sm ${cn("flex flex-col gap-6", className)} `}
         {...props}
       >
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Login</CardTitle>
+            <CardTitle className="text-2xl text-center">Eather | Login</CardTitle>
             <CardDescription>
               Enter your email below to login to your account
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
@@ -37,6 +73,7 @@ export default function Page({
                     id="email"
                     type="email"
                     placeholder="m@example.com"
+                    {...register("email")}
                     required
                   />
                 </div>
@@ -50,7 +87,12 @@ export default function Page({
                       Forgot your password?
                     </a>
                   </div>
-                  <Input id="password" type="password" required />
+                  <Input
+                    id="password"
+                    type="password"
+                    {...register("password")}
+                    required
+                  />
                 </div>
                 <Button type="submit" className="w-full">
                   Login

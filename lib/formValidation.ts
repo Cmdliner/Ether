@@ -32,6 +32,11 @@ export const accountCredentialsSchema = z.object({
 });
 
 
+export const loginValidationSchema  = z.object({
+  email: z.string().email(),
+  password: z.string()
+});
+
 export const validationSchemas = [personalInfoSchema, medicalHistorySchema, accountCredentialsSchema];
 
 type PersonalInfo = z.infer<typeof personalInfoSchema>;
@@ -39,5 +44,6 @@ type MedicalHistory = z.infer<typeof medicalHistorySchema>;
 type AccountCredentials = z.infer<typeof accountCredentialsSchema>;
 
 export type FormData = PersonalInfo & MedicalHistory & AccountCredentials;
+export type LoginData = z.infer<typeof loginValidationSchema>;
 
 export type IUser = Omit<FormData, 'confirm_password'>;

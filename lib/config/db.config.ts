@@ -18,9 +18,7 @@ export class DB {
         }
 
         if(!cached.promise) {
-            const opts = {
-                bufferCommands: false
-            };
+            const opts = {};
             cached.promise = mongoose.connect(cfg.DB_URI, opts).then(mongoose => mongoose);
 
 

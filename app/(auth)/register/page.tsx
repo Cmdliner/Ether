@@ -5,7 +5,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { validationSchemas, FormData } from "@/lib/formValidation";
 import { countries } from "@/lib/countries";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const steps = [
   { id: 1, label: "Personal Information" },
@@ -14,6 +14,7 @@ const steps = [
 ];
 
 export default function Page() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const isLastStep = currentStep === steps.length - 1;
   const [formData, setFormData] = useState<Partial<FormData>>({
@@ -50,7 +51,7 @@ export default function Page() {
         // throw new form error that says that confirm pasword doesnt match password
       }
 
-      // !todo => Send request (excluding confirm_password) to /api/auth/register;
+      // Send request (excluding confirm_password) to /api/auth/register;
       const { confirm_password, ...userData } = updatedData;
       const res = await fetch("/api/auth/register", {
         method: "POST",
@@ -60,7 +61,7 @@ export default function Page() {
       });
       const data = await res.json();
       if(data.status === 201) {
-        redirect("/");
+        router.push("/login");
       }
       // ! todo => Handle other kinds of errors and error states
       return;
