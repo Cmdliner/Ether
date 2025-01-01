@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 export default function Page({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: any) {
   const router = useRouter();
   const { register, handleSubmit } = useForm<LoginData>({
     resolver: zodResolver(loginValidationSchema),
