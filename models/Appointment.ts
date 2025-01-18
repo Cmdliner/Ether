@@ -9,11 +9,11 @@ const AppointmentSchema = new Schema({
     complaints: {
         type: String,
         required: true,
+        // Select a min
     },
-    recommended_tests: {
-        type: String,
-        enum: [],
-    }
+    recommended_tests: [{
+        type: String
+    }]
 }, { timestamps: true });
 
 export const Appointment = model("Appointment", AppointmentSchema);

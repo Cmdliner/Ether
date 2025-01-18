@@ -1,5 +1,5 @@
 import { DB } from "@/lib/config/db.config";
-import { User } from "@/models/user.model";
+import { User } from "@/models/User";
 import { compare } from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import * as jwt from "jsonwebtoken";
@@ -14,12 +14,12 @@ export async function POST(req: NextRequest) {
         const user = await User.findOne({ email });
         const passwordsMatch = await compare(password, user?.password!);
         if (!passwordsMatch) {
-            return NextResponse.json({ status: 400, error: true, message: "Invalid email or password!" });
+            return NextResponse.json({ error: true, message: "Invalid email or password!" }, { status: 400 });
         }
         const accessToken = jwt.sign({ id: user?._id }, cfg.ACCESS_TOKEN_SECRET, { expiresIn: "30d" });
-        return NextResponse.json({ status: 200, access_token: accessToken});
+        return NextResponse.json({ access_token: accessToken }, { status: 200 });
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ status: 500, message: "A fatal error occured!" });
+        return NextResponse.json({ message: "A fatal error occured!" }, { status: 500 });
     }
 }

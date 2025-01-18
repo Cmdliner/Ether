@@ -4,10 +4,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const Navbar = () => {
+export function Navbar () {
   const isLoggedIn = true;
   return (
-    <nav className="fixed top-0 left-0 w-full bg-black backdrop-blur-md text-white shadow-lg z-50 p-4 border-b-[.5px] border-gray-500">
+    <nav className="sticky top-0 bg-black backdrop-blur-md text-white shadow-lg z-50 p-4 border-b-[.5px] border-gray-500">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold">
           Eather

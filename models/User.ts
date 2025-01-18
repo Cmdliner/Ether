@@ -42,6 +42,6 @@ const UserSchema = new Schema({
         enum: ["AS", "AA", "AC", "SS", "SC", "CC"],
         required: true
     }
-});
+}, { timestamps: true });
 
 export const User = model<IUser>("user", UserSchema);
