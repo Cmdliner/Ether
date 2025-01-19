@@ -17,10 +17,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 
-export default function Page({
-  className,
-  ...props
-}: any) {
+export default function Page({ className, ...props }: any) {
   const router = useRouter();
   const { register, handleSubmit } = useForm<LoginData>({
     resolver: zodResolver(loginValidationSchema),
@@ -29,26 +26,31 @@ export default function Page({
   });
 
   const onSubmit: SubmitHandler<LoginData> = async (data: LoginData) => {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-        Accepts: "application/json",
-      },
-      body: JSON.stringify(data),
-    } satisfies RequestInit);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+          Accepts: "application/json",
+        },
+        body: JSON.stringify(data),
+      } satisfies RequestInit);
+      console.log({status: res.status});
 
-    if (!res.ok) {
+      if (!res.ok) {
+        // !todo => Handle errors
+        return // Prevents the rest of the res from being parsed
+      }
+      
+      const responseData = await res.json();
+      console.log(responseData);
+
+      router.push("/dashboard");
+    } catch (error) {
+      console.error(error);
       // !todo => Handle errors
     }
-    const { access_token, status } = await res.json();
-    if (status > 400) {
-      // !todo => Handle errors
-    }
-
-    localStorage.setItem("auth_token", access_token);
-    router.push("/");
   };
 
   return (
@@ -59,7 +61,9 @@ export default function Page({
       >
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl text-center">Eather | Login</CardTitle>
+            <CardTitle className="text-2xl text-center">
+              Eather | Login
+            </CardTitle>
             <CardDescription>
               Enter your email below to login to your account
             </CardDescription>

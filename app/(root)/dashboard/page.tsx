@@ -1,53 +1,65 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CalendarCheck, VolumeIcon as Vial, ClipboardList, Activity, PlusCircle } from 'lucide-react'
-
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  CalendarCheck,
+  VolumeIcon as Vial,
+  ClipboardList,
+  Activity,
+  PlusCircle,
+} from "lucide-react";
+import Link from "next/link";
 
 export default function Page() {
   return (
     <main className="flex-1 space-y-4 p-4 md:p-6 w-full">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="transform transition-all hover:scale-105 duration-300">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <CalendarCheck className="mr-2 h-5 w-5 text-blue-500" />
-              Upcoming Appointments
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">3</p>
-            <p className="text-xs text-muted-foreground">
-              Next: Today at 2:30 PM
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="transform transition-all hover:scale-105 duration-300">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Vial className="mr-2 h-5 w-5 text-green-500" />
-              Test Results Pending
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">2</p>
-            <p className="text-xs text-muted-foreground">
-              Expected within 48 hours
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="transform transition-all hover:scale-105 duration-300">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <ClipboardList className="mr-2 h-5 w-5 text-purple-500" />
-              Recent History
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">8</p>
-            <p className="text-xs text-muted-foreground">
-              Appointments this month
-            </p>
-          </CardContent>
-        </Card>
+        <Link href="/appointments">
+          <Card className="transform transition-all hover:scale-105 duration-300">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <CalendarCheck className="mr-2 h-5 w-5 text-blue-500" />
+                Upcoming Appointments
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold">3</p>
+              <p className="text-xs text-muted-foreground">
+                Next: Today at 2:30 PM
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/results?status=pending">
+          <Card className="transform transition-all hover:scale-105 duration-300">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Vial className="mr-2 h-5 w-5 text-green-500" />
+                Test Results Pending
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold">2</p>
+              <p className="text-xs text-muted-foreground">
+                Expected within 48 hours
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/appointments/history">
+          <Card className="transform transition-all hover:scale-105 duration-300">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <ClipboardList className="mr-2 h-5 w-5 text-purple-500" />
+                Recent History
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold">8</p>
+              <p className="text-xs text-muted-foreground">
+                Appointments this month
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
       <Card className="transform transition-all duration-300 max-w-full">
         <CardHeader>

@@ -6,6 +6,10 @@ const AppointmentSchema = new Schema({
         ref: "User",
         required: true
     },
+    scheduled_for: {
+        type: Date,
+        required: true
+    },
     complaints: {
         type: String,
         required: true,

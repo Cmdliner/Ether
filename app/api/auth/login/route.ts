@@ -2,8 +2,7 @@ import { DB } from "@/lib/config/db.config";
 import { User } from "@/models/User";
 import { compare } from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
-import * as jwt from "jsonwebtoken";
-import { cfg } from "@/lib/init";
+import { createSession } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
     try {
@@ -16,8 +15,8 @@ export async function POST(req: NextRequest) {
         if (!passwordsMatch) {
             return NextResponse.json({ error: true, message: "Invalid email or password!" }, { status: 400 });
         }
-        const accessToken = jwt.sign({ id: user?._id }, cfg.ACCESS_TOKEN_SECRET, { expiresIn: "30d" });
-        return NextResponse.json({ access_token: accessToken }, { status: 200 });
+        await createSession(user?.id);
+        return NextResponse.json({ message: "User login successful" }, { status: 200 });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ message: "A fatal error occured!" }, { status: 500 });
