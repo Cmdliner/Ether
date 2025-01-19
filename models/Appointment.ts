@@ -12,7 +12,6 @@ const AppointmentSchema = new Schema({
     },
     complaints: {
         type: String,
-        required: true,
         // Select a min
     },
     recommended_tests: [{
