@@ -37,13 +37,22 @@ export const loginValidationSchema  = z.object({
   password: z.string()
 });
 
+export const otpValidationSchema = z.object({
+  otp: z.object({
+    value: z.string(),
+    kind: z.enum(["password_reset", "email_verification"] as [string, ...string[]]),
+    expires_at: z.date()
+  }).optional()
+})
+
 export const validationSchemas = [personalInfoSchema, medicalHistorySchema, accountCredentialsSchema];
 
 type PersonalInfo = z.infer<typeof personalInfoSchema>;
 type MedicalHistory = z.infer<typeof medicalHistorySchema>;
 type AccountCredentials = z.infer<typeof accountCredentialsSchema>;
+type Otp = z.infer<typeof otpValidationSchema>;
 
 export type FormData = PersonalInfo & MedicalHistory & AccountCredentials;
 export type LoginData = z.infer<typeof loginValidationSchema>;
 
-export type IUser = Omit<FormData, 'confirm_password'>;
+export type IUser = Omit<FormData, 'confirm_password'> & Otp;

@@ -36,17 +36,15 @@ export default function Page({ className, ...props }: any) {
         },
         body: JSON.stringify(data),
       } satisfies RequestInit);
-      console.log({status: res.status});
 
       if (!res.ok) {
         // !todo => Handle errors
         return // Prevents the rest of the res from being parsed
       }
       
-      const responseData = await res.json();
-      console.log(responseData);
-
+      await res.json();
       router.push("/dashboard");
+
     } catch (error) {
       console.error(error);
       // !todo => Handle errors
@@ -76,7 +74,7 @@ export default function Page({ className, ...props }: any) {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
+                    placeholder="yemi@example.com"
                     {...register("email")}
                     required
                   />
@@ -85,7 +83,7 @@ export default function Page({ className, ...props }: any) {
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
                     <a
-                      href="#"
+                      href="/forgot-password"
                       className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                     >
                       Forgot your password?

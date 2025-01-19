@@ -41,6 +41,18 @@ const UserSchema = new Schema({
         type: String,
         enum: ["AS", "AA", "AC", "SS", "SC", "CC"],
         required: true
+    },
+    otp: {
+        expires_at: {
+            type: Date
+        },
+        kind: {
+            type: String,
+            enum: ["email_verification", "password_reset"]
+        },
+        value: {
+            type: String
+        }
     }
 }, { timestamps: true });
 
