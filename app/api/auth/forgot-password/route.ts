@@ -20,8 +20,6 @@ export default async function POST(req: NextRequest) {
         }
 
         await user.save();
-
-
         // !todo => Send email in OTP
 
         return NextResponse.json({ success: true, message: "An OTP has been sent to your email" }, { status: 200 });

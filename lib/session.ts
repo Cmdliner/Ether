@@ -7,11 +7,9 @@ import { cookies } from 'next/headers';
 const secretKey = cfg.ACCESS_TOKEN_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-
-
 export async function encrypt(payload: SessionPayload) {
     return new SignJWT(payload)
-        .setProtectedHeader({ alg: 'HS256' })
+        .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
         .setIssuedAt()
         .setExpirationTime('7d')
         .sign(encodedKey);
@@ -26,6 +24,7 @@ export async function decrypt(session: string | undefined = "") {
         return payload;
     } catch (error) {
         console.log('Failed to verify session')
+        console.debug(error);
         console.error(error);
 
     }
@@ -42,7 +41,7 @@ export async function createSession(userId: string) {
         expires: expiresAt,
         sameSite: 'lax',
         path: '/'
-    })
+    });
 }
 
 

@@ -16,10 +16,9 @@ export async function middleware(req: NextRequest) {
         return NextResponse.next()
     }
 
-    // Get cookie and decrypt sesssion stored inside
+    // Get cookie and decrypt session stored inside
     const cookie = cookies().get('session')?.value;
     const session = await decrypt(cookie);
-
 
     // Redirect if no userId stored in session for protected routes
     if(isProtectedRoute && !session?.userId) {
